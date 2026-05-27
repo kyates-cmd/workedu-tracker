@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-REP Team Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+</style>
 <style>
   :root {
     --navy: #0f2240;
@@ -718,8 +720,8 @@
       </div>
     </div>
     <div class="header-nav">
-      <button class="nav-btn active" onclick="switchTab('tracker')">📋 Project Tracker</button>
-      <button class="nav-btn" onclick="switchTab('agenda')">📄 Meeting Agenda</button>
+      <button class="nav-btn active" onclick="switchTab('tracker', this)">📋 Project Tracker</button>
+      <button class="nav-btn" onclick="switchTab('agenda', this)">📄 Meeting Agenda</button>
     </div>
     <div class="header-right">
       <span style="font-size:12px;color:rgba(255,255,255,0.5);">Viewing as:</span>
@@ -960,25 +962,25 @@ let meetingNotes = {}; // key: "type-id", value: { text, author, time }
 let discussedItems = new Set(); // set of "type-id" keys
 
 let projects = [
-  { id: 1, name: 'Regional Work-Based Learning Platform', owner: 'Amanda R.', status: 'on-track', priority: 'high', nextAction: 'Finalize employer onboarding workflow', deadline: '2026-06-15', blockers: '', lastUpdated: '2026-05-26', updatedBy: 'Amanda R.' },
-  { id: 2, name: 'Talent Pipeline Dashboard', owner: 'Brian K.', status: 'at-risk', priority: 'high', nextAction: 'Resolve data integration issue with IVTECH', deadline: '2026-06-01', blockers: 'Waiting on IT access from two partners', lastUpdated: '2026-05-20', updatedBy: 'Brian K.' },
-  { id: 3, name: 'K-12 Employer Engagement Initiative', owner: 'Carla M.', status: 'on-track', priority: 'medium', nextAction: 'Schedule Q3 advisory board meeting', deadline: '2026-06-30', blockers: '', lastUpdated: '2026-05-25', updatedBy: 'Carla M.' },
-  { id: 4, name: 'Regional Skills Gap Analysis', owner: 'David S.', status: 'stuck', priority: 'high', nextAction: 'Get sign-off on survey instrument from steering committee', deadline: '2026-05-30', blockers: 'Steering committee meeting postponed twice', lastUpdated: '2026-05-15', updatedBy: 'David S.' },
-  { id: 5, name: 'E-REP Talent Website Refresh', owner: 'Emily T.', status: 'on-track', priority: 'medium', nextAction: 'Review agency design mockups', deadline: '2026-07-01', blockers: '', lastUpdated: '2026-05-27', updatedBy: 'Emily T.' },
-  { id: 6, name: 'Apprenticeship Expansion Program', owner: 'Frank W.', status: 'at-risk', priority: 'high', nextAction: 'Confirm co-investment from two remaining employer partners', deadline: '2026-06-10', blockers: 'Two employers have not responded to LOI', lastUpdated: '2026-05-22', updatedBy: 'Frank W.' },
-  { id: 7, name: 'Postsecondary Alignment Summit', owner: 'Grace L.', status: 'on-track', priority: 'medium', nextAction: 'Lock venue and confirm keynote speaker', deadline: '2026-08-15', blockers: '', lastUpdated: '2026-05-24', updatedBy: 'Grace L.' },
-  { id: 8, name: 'Employer Roundtable Series (Q3)', owner: 'Henry P.', status: 'on-hold', priority: 'low', nextAction: 'Revisit schedule after budget approval', deadline: '', blockers: 'On hold pending Q3 budget decision', lastUpdated: '2026-05-10', updatedBy: 'Henry P.' },
-  { id: 9, name: 'Career Pathways Communications Campaign', owner: 'Amanda R.', status: 'on-track', priority: 'medium', nextAction: 'Approve social media content calendar', deadline: '2026-06-05', blockers: '', lastUpdated: '2026-05-26', updatedBy: 'Amanda R.' },
-  { id: 10, name: 'High School Internship Pilot (Summer 2026)', owner: 'Carla M.', status: 'on-track', priority: 'high', nextAction: 'Confirm 12 student placements and orientation date', deadline: '2026-06-03', blockers: '', lastUpdated: '2026-05-27', updatedBy: 'Carla M.' },
+  { id: 1, name: 'Regional Work-Based Learning Platform', owner: 'Sam', status: 'on-track', priority: 'high', nextAction: 'Finalize employer onboarding workflow', deadline: '2026-06-15', blockers: '', lastUpdated: '2026-05-26', updatedBy: 'Sam' },
+  { id: 2, name: 'Talent Pipeline Dashboard', owner: 'Trent', status: 'at-risk', priority: 'high', nextAction: 'Resolve data integration issue with IVTECH', deadline: '2026-06-01', blockers: 'Waiting on IT access from two partners', lastUpdated: '2026-05-20', updatedBy: 'Trent' },
+  { id: 3, name: 'K-12 Employer Engagement Initiative', owner: 'India', status: 'on-track', priority: 'medium', nextAction: 'Schedule Q3 advisory board meeting', deadline: '2026-06-30', blockers: '', lastUpdated: '2026-05-25', updatedBy: 'India' },
+  { id: 4, name: 'Regional Skills Gap Analysis', owner: 'Andy', status: 'stuck', priority: 'high', nextAction: 'Get sign-off on survey instrument from steering committee', deadline: '2026-05-30', blockers: 'Steering committee meeting postponed twice', lastUpdated: '2026-05-15', updatedBy: 'Andy' },
+  { id: 5, name: 'E-REP Talent Website Refresh', owner: 'Kara', status: 'on-track', priority: 'medium', nextAction: 'Review agency design mockups', deadline: '2026-07-01', blockers: '', lastUpdated: '2026-05-27', updatedBy: 'Kara' },
+  { id: 6, name: 'Apprenticeship Expansion Program', owner: 'Mike', status: 'at-risk', priority: 'high', nextAction: 'Confirm co-investment from two remaining employer partners', deadline: '2026-06-10', blockers: 'Two employers have not responded to LOI', lastUpdated: '2026-05-22', updatedBy: 'Mike' },
+  { id: 7, name: 'Postsecondary Alignment Summit', owner: 'Jesse', status: 'on-track', priority: 'medium', nextAction: 'Lock venue and confirm keynote speaker', deadline: '2026-08-15', blockers: '', lastUpdated: '2026-05-24', updatedBy: 'Jesse' },
+  { id: 8, name: 'Employer Roundtable Series (Q3)', owner: 'Trent', status: 'on-hold', priority: 'low', nextAction: 'Revisit schedule after budget approval', deadline: '', blockers: 'On hold pending Q3 budget decision', lastUpdated: '2026-05-10', updatedBy: 'Trent' },
+  { id: 9, name: 'Career Pathways Communications Campaign', owner: 'Kara', status: 'on-track', priority: 'medium', nextAction: 'Approve social media content calendar', deadline: '2026-06-05', blockers: '', lastUpdated: '2026-05-26', updatedBy: 'Kara' },
+  { id: 10, name: 'High School Internship Pilot (Summer 2026)', owner: 'India', status: 'on-track', priority: 'high', nextAction: 'Confirm 12 student placements and orientation date', deadline: '2026-06-03', blockers: '', lastUpdated: '2026-05-27', updatedBy: 'India' },
 ];
 
 let announcements = [
-  { id: 1, text: 'Board meeting scheduled for June 18 — all project leads should have status summaries ready by June 12.', author: 'Admin', time: '2026-05-26' },
+  { id: 1, text: 'Board meeting scheduled for June 18 — all project leads should have status summaries ready by June 12.', author: 'Sam', time: '2026-05-26' },
 ];
 
 let discussionPoints = [
-  { id: 1, text: 'Should we move the Skills Gap steering committee meeting deadline or escalate to leadership?', type: 'decision', section: 'discussion', author: 'David S.', time: '2026-05-26 9:14am' },
-  { id: 2, text: 'Update on Apprenticeship Program — reached out to both employers via phone, expecting responses by EOW.', type: 'update', section: 'discussion', author: 'Frank W.', time: '2026-05-27 8:02am' },
+  { id: 1, text: 'Should we move the Skills Gap steering committee meeting deadline or escalate to leadership?', type: 'decision', section: 'discussion', author: 'Andy', time: '2026-05-26 9:14am' },
+  { id: 2, text: 'Update on Apprenticeship Program — reached out to both employers via phone, expecting responses by EOW.', type: 'update', section: 'discussion', author: 'Mike', time: '2026-05-27 8:02am' },
 ];
 
 let nextId = 11;
@@ -1025,11 +1027,11 @@ const PRIORITY_LABELS = {
 };
 
 // ─── TABS ────────────────────────────────────────────
-function switchTab(tab) {
+function switchTab(tab, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
   if (tab === 'agenda') renderAgenda();
 }
 
@@ -1471,9 +1473,8 @@ function renderAgenda() {
 }
 
 function exportAgenda() {
-  switchTab('agenda');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  const agendaBtn = document.querySelectorAll('.nav-btn')[1];
+  switchTab('agenda', agendaBtn);
   showToast('📄 Agenda refreshed from tracker');
 }
 
